@@ -1,5 +1,4 @@
 flask
-metapy
 pytoml
 elasticsearch
 flask_socketio

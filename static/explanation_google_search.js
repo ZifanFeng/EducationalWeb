@@ -1,8 +1,7 @@
 const GOOGLE_SEARCH_API = `https://content.googleapis.com/discovery/v1/apis/customsearch/v1/rest` 
 const CX = "e21570fed0b80d48e";
-const API_KEY = "<API>";
+const API_KEY = window.appConfig.google_search_api_key;
 function init() {
-    console.log("init client")
     gapi.client.setApiKey(API_KEY);
     gapi.client.load(GOOGLE_SEARCH_API)
         .then(() => { console.log("GAPI client loaded for API"); })

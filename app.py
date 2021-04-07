@@ -9,7 +9,9 @@ from functools import update_wrapper
 from datetime import timedelta
 from flask_socketio import SocketIO
 from flask_cors import CORS, cross_origin
+from dotenv import load_dotenv, find_dotenv
 
+load_dotenv(find_dotenv())
 
 app = Flask(__name__, instance_relative_config=True)
 
@@ -39,7 +41,7 @@ NUM_VIS = 0
 MAX_HIST = 50
 
 IS_LOCAL_SRV = True 
-
+GOOGLE_SEARCH_API_KEY = os.getenv("GOOGLE_SEARCH_API_KEY") 
 
 def crossdomain(origin=None, methods=None, headers=None, max_age=21600,
                 attach_to_all=True, automatic_options=True):
@@ -126,12 +128,11 @@ def modify_url_domain(url):
 
 @app.route('/')
 def index():
-    global COURSE_NAMES,NUM_COURSES,NUM_VIS
+    global COURSE_NAMES,NUM_COURSES,NUM_VIS,GOOGLE_SEARCH_API_KEY
     COURSE_NAMES,NUM_COURSES = model.get_course_names()
     model.load_related_slides()
     vis_urls,vis_strs = get_prev_urls()
-
-    return render_template("base.html",course_names=COURSE_NAMES,num_courses=NUM_COURSES,vis_urls=vis_urls,vis_strs=vis_strs,num_vis=NUM_VIS)
+    return render_template("base.html",course_names=COURSE_NAMES,num_courses=NUM_COURSES,vis_urls=vis_urls,vis_strs=vis_strs,num_vis=NUM_VIS, google_search_api_key=GOOGLE_SEARCH_API_KEY)
 
 def resolve_slide(course_name,lno,type_,slide_name=None,log=False,action=None):
 	global COURSE_NAMES,NUM_COURSES

@@ -84,6 +84,7 @@ if __name__ == '__main__':
     print('Building or loading index...')
     idx = metapy.index.make_inverted_index(cfg)
     
+    print("Index is loaded")
 
     with open(cfg, 'r') as fin:
         cfg_d = pytoml.load(fin)
@@ -96,7 +97,7 @@ if __name__ == '__main__':
     start_time = time.time()
     
     ranker = load_ranker(cfg,2500)
-
+    print("ranker is loaded")
 
     query = metapy.index.Document()
     query.content('WordNet ontology')

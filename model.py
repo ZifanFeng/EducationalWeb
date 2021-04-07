@@ -303,7 +303,7 @@ def get_search_results(search):
 def get_explanation(search_string,top_k=1):
     query = metapy.index.Document()
     query.content(search_string)
-    print(query)
+    print(f"get_explanation: {search_string}")
     # score2(ranker,idx,query)
     file_id_tups, fn_dict = score2(ranker_obj,idx,query,top_k,alpha)
     # print(file_id_tups,fn_dict)

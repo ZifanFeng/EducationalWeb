@@ -8,6 +8,7 @@ from flask import make_response, request, current_app
 from functools import update_wrapper
 from datetime import timedelta
 from flask_socketio import SocketIO
+from flask_cors import CORS, cross_origin
 
 
 app = Flask(__name__, instance_relative_config=True)
@@ -18,6 +19,11 @@ srv_url = 'http://timan102.cs.illinois.edu/explanation/'
 # app.config.from_object('config')
 
 socketio = SocketIO(app) 
+socketio.init_app(app, cors_allowed_origins="*")
+CORS(app, resources={r"/*": {"origins": "*"}})
+#app.config['CORS_ALLOW_HEADERS'] = 'Content-Type'
+app.config['CORS_HEADERS'] = 'Content-Type'
+
 application = app
 
 from flask import render_template
@@ -220,7 +226,8 @@ def value_changed():
 
 
 @app.route('/explain', methods=['POST','OPTIONS'])
-@crossdomain(origin='*')
+@cross_origin()
+#@crossdomain(origin='*')
 def socket_connection(course_name=None, lno=None, slide_name=None, curr_slide=None):
 
 	search_string = request.json['searchString']
@@ -237,7 +244,7 @@ def socket_connection(course_name=None, lno=None, slide_name=None, curr_slide=No
 @app.route('/search', methods=['POST'])
 def results(course_name=None, lno=None, slide_name=None, curr_slide=None):   
 	data = json.loads(request.data.decode('utf-8'))
-	# print(1,1,data)
+	print(1,1,data)
 	querytext = data['searchString']
 	explanation,file_names = model.get_explanation(querytext)
 	if explanation == '':

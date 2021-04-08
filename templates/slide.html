@@ -305,8 +305,12 @@ $(function() {
 </div>
 </div>
 
-
+<script type="text/javascript"> 
+    var appConfig = {
+        google_search_api_key: "{{ google_search_api_key }}",
+    }
+</script>
+  <script type="text/javascript" src="http://localhost:8096/static/explanation_google_search.js"></script>
 
 {% endblock %}
 
-  

@@ -56,7 +56,12 @@ var toggleExplanationContainer = function(isVisible) {
 
 var googleSearchExp = function() {
     query = document.getElementById("search-explanation").getAttribute("data-query");
-    console.log("more", query);
+    if (query.length > 0) {
+        googleQueryExplanation(query)
+            .then((data)=> {
+                console.log(data);
+            })
+    }
 }
 
 var doSearch = function(searchString) {

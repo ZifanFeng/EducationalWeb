@@ -1,6 +1,6 @@
 const GOOGLE_SEARCH_API = `https://content.googleapis.com/discovery/v1/apis/customsearch/v1/rest` 
 const CX = "e21570fed0b80d48e";
-const API_KEY = window.appConfig.google_search_api_key;
+const API_KEY = appConfig.google_search_api_key;
 function init() {
     gapi.client.setApiKey(API_KEY);
     gapi.client.load(GOOGLE_SEARCH_API)
@@ -14,9 +14,12 @@ function googleQueryExplanation(query) {
     })
         .then((response) => {
             // Handle the results here (response.result has the parsed body).
-            console.log("Response", response);
+            return response;
         })
-        .catch( (err) => { console.error("Execute error", err); });
+        .catch( (err) => { 
+            console.error("Execute error", err); 
+            return {};
+        });
 }
 
 gapi.load("client", init);

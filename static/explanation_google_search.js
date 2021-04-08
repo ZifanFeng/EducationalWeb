@@ -14,11 +14,15 @@ function googleQueryExplanation(query) {
     })
         .then((response) => {
             // Handle the results here (response.result has the parsed body).
-            return response;
+            if (response.status==200) {
+                return response.result.items;
+            } else {
+                return [];
+            }
         })
         .catch( (err) => { 
             console.error("Execute error", err); 
-            return {};
+            return [];
         });
 }
 

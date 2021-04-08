@@ -54,12 +54,33 @@ var toggleExplanationContainer = function(isVisible) {
     $("#notHelpfulButton").css("display", displayMode);
 }
 
+var googleResultItemHTML = (result) => {
+    item = document.createElement("li");
+    item.innerHTML =`
+        <a href=${result.link}><h5>${result.title}</h5></a>
+        <p>${result.htmlSnippet}</p>
+    `
+    return item;
+}
+
+var googleResultsListHMTL = (results) => {
+    searchList = document.createElement("ul");
+    searchList.style.overflow = "scroll";
+    searchList.setAttribute("height", "260px")
+    searchList.className = "scrollable-search-list";
+    for (result of results) {
+        searchList.appendChild(googleResultItemHTML(result));
+    }
+    return searchList;
+}
+
 var googleSearchExp = function() {
     query = document.getElementById("search-explanation").getAttribute("data-query");
     if (query.length > 0) {
         googleQueryExplanation(query)
-            .then((data)=> {
-                console.log(data);
+            .then((results)=> {
+                resultHTML = googleResultsListHMTL(results);
+                document.getElementById("docs-div").appendChild(resultHTML);
             })
     }
 }

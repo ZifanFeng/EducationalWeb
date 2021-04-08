@@ -229,14 +229,33 @@ $(function() {
 
     
  <div class="container-fluid main_cnt">
-  <div id="explanation-container" class="col-sm-12">
-     <div id="docs-div" class="col-md-12 mx-auto"></div>
+     <div id="explanation-container" class="col-sm-12">
+         <h3 id="no-explain-text" style="text-align: center;margin-top:20px;">No Explanation Found</h3>
+         <div id="docs-div" class="col-md-12 mx-auto">
+         <div class="card">
+             <div class="card-header">
+                 <div style="display: flex;justify-content: space-between;">
+                     <b id="explain_title" style="font-size:14pt;margin-left: 10px;
+                               padding: 10px;"></b>
+                     <span id="close" style="cursor:pointer;float:right;background:transparent;display:inline-block;
+                               padding:4px; margin:10px; font-size: 12pt; font-weight: bold;" onclick="hideExp()">X</span>
+                 </div>
+             </div>
+             <div class="card-body">
+                 <span id='explain_div' style= "display:inline-block; 
+                                                margin:10px;
+                                                padding:10px;
+    word-break:break-all;"></span>
+                <br>
+            </div>
+        </div>
+        </div>
       <br style="clear: both;">
       <div>
-      <button type="button" class="btn btn-success pull-left" id="helpfulButton">Helpful</button>
-      <button type="button" class="btn btn-danger pull-right" id="notHelpfulButton">Not Helpful</button>
-    </div>
-    </div>
+          <button type="button" class="btn btn-success pull-left" id="helpfulButton">Helpful</button>
+          <button type="button" class="btn btn-danger pull-right" id="notHelpfulButton">Not Helpful</button>
+     </div>
+     </div>
 <div class="row main_row" >
 <div class="col-sm-12 main"> 
   <h2>{{' '.join(course_name.split('-')).title()}}</h2>
@@ -279,11 +298,10 @@ $(function() {
     </div>
  </div>
 </div>
- <div class="row" style="display: flex;padding: 20px;">
-<div class="col-md-9" id="result" padding-bottom="15px">
- </div>
+<div class="row" style="display: flex;padding: 20px;">
+     <div class="col-md-9" id="result" padding-bottom="15px"></div>
 </div>
-    </div>
+</div>
 
 
 

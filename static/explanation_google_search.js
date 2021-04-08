@@ -7,7 +7,7 @@ function init() {
         .then(() => { console.log("GAPI client loaded for API"); })
         .catch( (err) => { console.error("Error loading GAPI client for API", err); });
 }
-function search(query) {
+function googleQueryExplanation(query) {
     return gapi.client.search.cse.list({
         "cx": CX,
         "q": query

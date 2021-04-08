@@ -54,6 +54,11 @@ var toggleExplanationContainer = function(isVisible) {
     $("#notHelpfulButton").css("display", displayMode);
 }
 
+var googleSearchExp = function() {
+    query = document.getElementById("search-explanation").getAttribute("data-query");
+    console.log("more", query);
+}
+
 var doSearch = function(searchString) {
     const data = {
         "searchString": searchString,
@@ -86,6 +91,7 @@ var doSearch = function(searchString) {
                     toggleNoExplainText(false);
                     document.getElementById("explain_title").innerHTML = `Explanation for ${searchString}`;
                     document.getElementById("explain_div").innerHTML = doc; 
+                    document.getElementById("search-explanation").setAttribute("data-query", searchString);
                     helpBut = document.getElementById('helpfulButton');
                     notHelpBut = document.getElementById('notHelpfulButton');
                     helpBut.addEventListener('click', function() {

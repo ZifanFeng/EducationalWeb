@@ -65,8 +65,6 @@ var googleResultItemHTML = (result) => {
 
 var googleResultsListHMTL = (results) => {
     searchList = document.createElement("ul");
-    searchList.style.overflow = "scroll";
-    searchList.setAttribute("height", "260px")
     searchList.className = "scrollable-search-list";
     for (result of results) {
         searchList.appendChild(googleResultItemHTML(result));

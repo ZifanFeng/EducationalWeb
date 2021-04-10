@@ -228,6 +228,7 @@ def value_changed():
 @app.route('/google-search', methods=['POST'])
 def google_search():
     raw_results = request.json['results']
+    print(raw_results)
     socketio.emit('google-search-result', raw_results, broadcast=True)
     return 'OK'
 

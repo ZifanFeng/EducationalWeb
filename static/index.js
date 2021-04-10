@@ -1,3 +1,5 @@
+var LOCAL_HOST = "http://localhost:8096";
+
 var hideExp = function(){
     toggleExplanationContainer(false);
 
@@ -22,7 +24,7 @@ var test = function(){
 
 $(document).ready(function(){
     var socket = io()
-    socket.connect('http://localhost:8096/', {transports: ['websocket']});
+    socket.connect(`${LOCAL_HOST}/`, {transports: ['websocket']});
 
     socket.on('message', function(searchString) {
         console.log("1")
@@ -41,7 +43,7 @@ var logExp = function(isHelpful,expId,expTerm){
         action: isHelpful+'###EXP_###'+expTerm+'###'+expId,
         route: window.location.pathname
     });
-    navigator.sendBeacon('http://localhost:8096/log_action', logdata);
+    navigator.sendBeacon(`${LOCAL_HOST}/log_action`, logdata);
 
 }
 
@@ -96,7 +98,14 @@ var doGoogleSearch = function() {
     if (query.length > 0) {
         googleQueryExplanation(query)
             .then((results)=> {
-                displayGoogleSearch(results);
+                var xhttp = new XMLHttpRequest();
+                    xhttp.onreadystatechange = function() {
+                };
+
+                xhttp.open("POST", `${LOCAL_HOST}/google-search`, true);
+                var text = window.getSelection().toString();
+                xhttp.setRequestHeader("Content-type", "application/json;charset=utf-8");
+                xhttp.send(JSON.stringify({ 'results':  results }));
             })
     }
 }

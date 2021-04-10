@@ -30,6 +30,7 @@ $(document).ready(function(){
         console.log("1")
         console.log(params);
         doSearch(params['searchString']);
+        localStorage.setItem("context", params['context'])
     });
     socket.on('google-search-result', function(searchResults) {
         displayGoogleSearch(searchResults);
@@ -95,16 +96,17 @@ var googleSearchExp = function() {
 
 var doGoogleSearch = function() {
     query = document.getElementById("search-explanation").getAttribute("data-query");
+    context = localStorage.getItem("context"); 
+    console.log(context)
     if (query.length > 0) {
         googleQueryExplanation(query)
             .then((results)=> {
                 var xhttp = new XMLHttpRequest();
-                    xhttp.onreadystatechange = function() {
-                };
+                xhttp.onreadystatechange = function() {};
 
                 xhttp.open("POST", `${LOCAL_HOST}/google-search`, true);
                 xhttp.setRequestHeader("Content-type", "application/json;charset=utf-8");
-                xhttp.send(JSON.stringify({ 'results':  results }));
+                xhttp.send(JSON.stringify({ 'results':  results, 'context': context }));
             })
     }
 }
@@ -132,7 +134,6 @@ var doSearch = function(searchString) {
         })
             .then(data => {
                 data = data.json;
-                console.log("bbb",data)
 
                 const doc = data.explanation;
 
@@ -141,7 +142,8 @@ var doSearch = function(searchString) {
                     toggleNoExplainText(false);
                     document.getElementById("explain_title").innerHTML = `Explanation for ${searchString}`;
                     document.getElementById("explain_div").innerHTML = doc; 
-                    document.getElementById("search-explanation").setAttribute("data-query", searchString);
+                    moreBut = document.getElementById("search-explanation");
+                    moreBut.setAttribute("data-query", searchString);
                     helpBut = document.getElementById('helpfulButton');
                     notHelpBut = document.getElementById('notHelpfulButton');
                     helpBut.addEventListener('click', function() {

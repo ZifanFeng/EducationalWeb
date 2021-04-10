@@ -225,6 +225,11 @@ def end():
 def value_changed():
     print("connected")
 
+@app.route('/google-search', methods=['POST'])
+def google_search():
+    raw_results = request.json['results']
+    socketio.emit('google-search-result', raw_results, broadcast=True)
+    return 'OK'
 
 @app.route('/explain', methods=['POST','OPTIONS'])
 @cross_origin()

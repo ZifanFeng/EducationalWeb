@@ -29,6 +29,9 @@ $(document).ready(function(){
         console.log(searchString)
         doSearch(searchString);
     });
+    socket.on('google-search-result', function(searchResults) {
+        displayGoogleSearch(searchResults);
+    });
     toggleNoExplainText(false);
     toggleExplanationContainer(false);
 });
@@ -72,14 +75,28 @@ var googleResultsListHMTL = (results) => {
     return searchList;
 }
 
+var displayGoogleSearch = function(results) {
+    resultHTML = googleResultsListHMTL(results);
+    document.getElementById("google-search-div").appendChild(resultHTML);
+}
+
 var googleSearchExp = function() {
     $("#google-search-div").empty();
     query = document.getElementById("search-explanation").getAttribute("data-query");
     if (query.length > 0) {
         googleQueryExplanation(query)
             .then((results)=> {
-                resultHTML = googleResultsListHMTL(results);
-                document.getElementById("google-search-div").appendChild(resultHTML);
+                displayGoogleSearch(results);
+            })
+    }
+}
+
+var doGoogleSearch = function() {
+    query = document.getElementById("search-explanation").getAttribute("data-query");
+    if (query.length > 0) {
+        googleQueryExplanation(query)
+            .then((results)=> {
+                displayGoogleSearch(results);
             })
     }
 }

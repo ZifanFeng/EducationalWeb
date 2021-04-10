@@ -73,12 +73,13 @@ var googleResultsListHMTL = (results) => {
 }
 
 var googleSearchExp = function() {
+    $("#google-search-div").empty();
     query = document.getElementById("search-explanation").getAttribute("data-query");
     if (query.length > 0) {
         googleQueryExplanation(query)
             .then((results)=> {
                 resultHTML = googleResultsListHMTL(results);
-                document.getElementById("docs-div").appendChild(resultHTML);
+                document.getElementById("google-search-div").appendChild(resultHTML);
             })
     }
 }

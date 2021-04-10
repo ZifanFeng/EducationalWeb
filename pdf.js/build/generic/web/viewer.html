@@ -408,13 +408,12 @@
             var xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function() {
             };
-
             console.log("selected window")
             xhttp.open("POST", "http://localhost:8096/explain", true);
             //xhttp.open("POST", "http://timan102.cs.illinois.edu/explanation//explain", true);
             var text = window.getSelection().toString();
             xhttp.setRequestHeader("Content-type", "application/json;charset=utf-8");
-            xhttp.send(JSON.stringify({ 'searchString':  text }));
+            xhttp.send(JSON.stringify({ 'searchString':  text, 'slidesContext': $("#viewer").text() }));
             // var pdoc =  window.parent.document;
             // pdoc.postMessage('test')
             // contentWindow.postMessage('test','http://localhost:8093/')

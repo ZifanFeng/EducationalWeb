@@ -237,16 +237,10 @@ def google_search():
 #@crossdomain(origin='*')
 def socket_connection(course_name=None, lno=None, slide_name=None, curr_slide=None):
 
-	search_string = request.json['searchString']
-	socketio.emit('message', search_string,broadcast=True)   
-	print(request,search_string)
-	# model.log(request.remote_addr,search_string,datetime.datetime.now(),'search_query')
-	# num_results,results,disp_strs,search_course_names,lnos, snippets,lec_names = model.get_search_results(search_string)
-	# if not results:
-	# 	num_results = 0
-	# 	results = []
-	
-	return 'OK'
+        search_string = request.json['searchString']
+        context = request.json['slidesContext']
+        socketio.emit('message', {"searchString": search_string, "context": context} ,broadcast=True) 
+        return 'OK'
 
 @app.route('/search', methods=['POST'])
 def results(course_name=None, lno=None, slide_name=None, curr_slide=None):   

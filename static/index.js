@@ -26,10 +26,10 @@ $(document).ready(function(){
     var socket = io()
     socket.connect(`${LOCAL_HOST}/`, {transports: ['websocket']});
 
-    socket.on('message', function(searchString) {
+    socket.on('message', function(params) {
         console.log("1")
-        console.log(searchString)
-        doSearch(searchString);
+        console.log(params);
+        doSearch(params['searchString']);
     });
     socket.on('google-search-result', function(searchResults) {
         displayGoogleSearch(searchResults);
@@ -103,7 +103,6 @@ var doGoogleSearch = function() {
                 };
 
                 xhttp.open("POST", `${LOCAL_HOST}/google-search`, true);
-                var text = window.getSelection().toString();
                 xhttp.setRequestHeader("Content-type", "application/json;charset=utf-8");
                 xhttp.send(JSON.stringify({ 'results':  results }));
             })
@@ -170,5 +169,11 @@ var doSearch = function(searchString) {
     }
 }
 
+var extractPDFData = function() {
+    pdfUrl = `http://localhost:8887/static/slides/cs-410/01_orientation----01_orientation-information----01_course-introduction-video_410DSO-intro.txt/cs-410----01_orientation----01_orientation-information----01_course-introduction-video_410DSO-intro.txt----slide10.pdf`;
+    pdf = PDFJS.getDocument(pdfUrl);
+    console.log(pdf);
+    
+}
 
 

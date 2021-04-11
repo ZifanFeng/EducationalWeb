@@ -5,7 +5,9 @@ import numpy as np
 import pickle
 from elasticsearch import Elasticsearch
 from ranker import *
-
+from gensim import corpora, models, similarities
+from gensim.parsing.preprocessing import remove_stopwords, preprocess_string
+from collections import defaultdict
 
 main_path = os.path.dirname(os.path.realpath(__file__))
 static_path = os.path.join(os.path.dirname(os.path.realpath(__file__)),'static')
@@ -321,5 +323,20 @@ def get_explanation(search_string,top_k=1):
     return formatted_exp,'#'.join(file_names)
 
 
+def rank_google_result(raw_results, context):
+    documents = list(map(lambda x: x['snippet'], raw_results))
+    documents = list(map(lambda x: preprocess_string(x), documents))
+    
+    dictionary = corpora.Dictionary(documents)
+    corpus = [dictionary.doc2bow(text) for text in documents]
 
+    lsi = models.LsiModel(corpus, id2word=dictionary, num_topics=2)
+    query = preprocess_string(context)
+    vec_bow = dictionary.doc2bow(query)
+    vec_lsi = lsi[vec_bow]
+    index = similarities.MatrixSimilarity(lsi[corpus])
+    sims= index[vec_lsi]
+    print(sims)
+    new_order_index = np.argsort( sims)
+    return [raw_results[i] for i in new_order_index]
 

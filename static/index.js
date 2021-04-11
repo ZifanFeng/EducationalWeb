@@ -64,6 +64,7 @@ var googleResultItemHTML = (result) => {
     item = document.createElement("li");
     item.innerHTML =`
         <a href=${result.link}><h5>${result.title}</h5></a>
+        <p><b>${result.displayLink}</b></p>
         <p>${result.htmlSnippet}</p>
     `
     return item;

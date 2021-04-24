@@ -58,6 +58,7 @@ var toggleExplanationContainer = function(isVisible) {
     $("#docs-div").css("display", displayMode);
     $("#helpfulButton").css("display", displayMode);
     $("#notHelpfulButton").css("display", displayMode);
+    $("#google-search-div").css("display","none");
 }
 
 var googleResultItemHTML = (result) => {
@@ -81,6 +82,7 @@ var googleResultsListHMTL = (results) => {
 
 var displayGoogleSearch = function(results) {
     resultHTML = googleResultsListHMTL(results);
+    $("#google-search-div").css("display", "block");
     searchDisplay = document.getElementById("google-search-div");
     if(searchDisplay.firstChild){
         searchDisplay.removeChild(searchDisplay.firstChild)
@@ -90,6 +92,7 @@ var displayGoogleSearch = function(results) {
 
 var googleSearchExp = function() {
     $("#google-search-div").empty();
+    $("#google-search-div").css("display", "block");
     query = document.getElementById("search-explanation").getAttribute("data-query");
     if (query.length > 0) {
         googleQueryExplanation(query)

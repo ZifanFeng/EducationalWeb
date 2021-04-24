@@ -339,5 +339,5 @@ def rank_google_result(raw_results, context):
     sims= index[vec_lsi]
     new_order_index = np.argsort(sims)
     print(new_order_index, sorted(sims))
-    return [raw_results[i] for i in new_order_index]
+    return new_order_index
 

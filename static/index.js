@@ -81,7 +81,11 @@ var googleResultsListHMTL = (results) => {
 
 var displayGoogleSearch = function(results) {
     resultHTML = googleResultsListHMTL(results);
-    document.getElementById("google-search-div").appendChild(resultHTML);
+    searchDisplay = document.getElementById("google-search-div");
+    if(searchDisplay.firstChild){
+        searchDisplay.removeChild(searchDisplay.firstChild)
+    }
+    searchDisplay.appendChild(resultHTML);
 }
 
 var googleSearchExp = function() {

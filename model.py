@@ -324,7 +324,7 @@ def get_explanation(search_string,top_k=1):
 
 
 def rank_google_result(raw_results, context):
-    documents = list(map(lambda x: x['snippet'], raw_results))
+    documents = list(map(lambda x: " ".join([x['title'], x['snippet']]), raw_results))
     documents = list(map(lambda x: preprocess_string(x), documents))
     
     dictionary = corpora.Dictionary(documents)
@@ -332,11 +332,12 @@ def rank_google_result(raw_results, context):
 
     lsi = models.LsiModel(corpus, id2word=dictionary, num_topics=2)
     query = preprocess_string(context)
+    print(query)
     vec_bow = dictionary.doc2bow(query)
     vec_lsi = lsi[vec_bow]
     index = similarities.MatrixSimilarity(lsi[corpus])
     sims= index[vec_lsi]
-    print(sims)
-    new_order_index = np.argsort( sims)
+    new_order_index = np.argsort(sims)
+    print(new_order_index, sorted(sims))
     return [raw_results[i] for i in new_order_index]
 

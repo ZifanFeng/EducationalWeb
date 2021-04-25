@@ -266,7 +266,9 @@ $(function() {
 <div class="sidebar">
     <ul class="nav nav-sidebar">
         {% for i in range(lec_slides[0]) %}
-          <embed type='application/pdf' src={{pdf_url}}/static/slides/{{course_name}}/{{lec_name}}/{{lec_slides[1][i]}}#toolbar=0&navpanes=0&scrollbar=0&view=Fit width='220px' height:'100px' >
+        <a style="display: inline-block" href="{{base_url}}/related_slide/{{course_name}}/{{lec_slides[4][i]}}/{{lec_slides[1][i]}}">
+            <embed type='application/pdf' src={{pdf_url}}/static/slides/{{course_name}}/{{lec_name}}/{{lec_slides[1][i]}}#toolbar=0&navpanes=0&scrollbar=0&view=Fit width='220px' height:'100px' style="pointer-events:none">
+        </a>
         {% endfor %}
     </ul>
 </div>

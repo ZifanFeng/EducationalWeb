@@ -184,7 +184,7 @@ def render_slide_template(course_name,lno,curr_slide, route):
 
 @app.route('/related_slide/<course_name>/<lno>/<slide_name>')
 def related_slide(course_name,slide_name,lno):
-        return render_slide_template(course_name, slide_name, lno, "related")
+        return render_slide_template(course_name, lno, slide_name, "related")
 @app.route('/next_slide/<course_name>/<lno>/<curr_slide>')
 def next_slide(course_name,lno,curr_slide):
     return render_slide_template(course_name, lno, curr_slide, "next")

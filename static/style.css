@@ -49,14 +49,14 @@
 @media screen and (min-width: 750px) {
   .sidebar {
     width: 300px;
-    position: absolute;
+    height: 100px;
+    position: static;
     margin-left: 15px;
     min-height: 650px;
   }
 
 
   .main{
-  	padding-right: 300px;
   }
 
   .main_cnt{

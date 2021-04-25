@@ -157,27 +157,27 @@ def resolve_slide(course_name,lno,type_,slide_name=None,log=False,action=None):
 @app.route('/slide/<course_name>/<lno>')
 def slide(course_name,lno):
 	global NUM_VIS, GOOGLE_SEARCH_API_KEY
-	next_slide_name,lno,lec_name,(num_related_slides,related_slides,disp_str,related_course_names,rel_lnos,rel_lec_names,disp_color,disp_snippet),lec_names,lnos,ses_disp_str= resolve_slide(course_name,lno,'drop-down')
+	next_slide_name,lno,lec_name,(num_related_slides,related_slides,disp_str,related_course_names,rel_lnos,rel_lec_names,disp_color,disp_snippet),lec_names,lnos,ses_disp_str,lec_slides = resolve_slide(course_name,lno,'drop-down')
 	vis_urls,vis_strs = get_prev_urls()
 
 	if next_slide_name is not None:
 		set_sess(request.url,ses_disp_str)
 	
-	return render_template("slide.html",slide_name=next_slide_name,course_name=course_name,num_related_slides=num_related_slides,related_slides = related_slides,disp_str=disp_str,disp_color=disp_color,disp_snippet=disp_snippet,related_course_names=related_course_names,lno=lno,lec_name=lec_name,lec_names=lec_names,lnos=lnos,course_names=COURSE_NAMES,num_courses=NUM_COURSES,rel_lnos=rel_lnos,rel_lec_names=rel_lec_names,vis_urls=vis_urls,vis_strs=vis_strs,num_vis=NUM_VIS,google_search_api_key=GOOGLE_SEARCH_API_KEY)
+	return render_template("slide.html",slide_name=next_slide_name,course_name=course_name,num_related_slides=num_related_slides,related_slides = related_slides,disp_str=disp_str,disp_color=disp_color,disp_snippet=disp_snippet,related_course_names=related_course_names,lno=lno,lec_name=lec_name,lec_names=lec_names,lnos=lnos,course_names=COURSE_NAMES,num_courses=NUM_COURSES,rel_lnos=rel_lnos,rel_lec_names=rel_lec_names,vis_urls=vis_urls,vis_strs=vis_strs,num_vis=NUM_VIS,google_search_api_key=GOOGLE_SEARCH_API_KEY, lec_slides=lec_slides)
 
 	
 
 
 def render_slide_template(course_name,lno,curr_slide, route): 
         global NUM_VIS, GOOGLE_SEARCH_API_KEY
-        slide_name,lno,lec_name,(num_related_slides,related_slides,disp_str,related_course_names,rel_lnos,rel_lec_names,disp_color,disp_snippet),lec_names,lnos,ses_disp_str = resolve_slide(course_name,lno,route,slide_name=curr_slide)
+        slide_name,lno,lec_name,(num_related_slides,related_slides,disp_str,related_course_names,rel_lnos,rel_lec_names,disp_color,disp_snippet),lec_names,lnos,ses_disp_str, lec_slides = resolve_slide(course_name,lno,route,slide_name=curr_slide)
 
         vis_urls,vis_strs = get_prev_urls()
 
         if slide_name is not None:
             set_sess(request.url,ses_disp_str)
         if slide_name is not None:
-            return render_template("slide.html",slide_name=slide_name,course_name=course_name,num_related_slides=num_related_slides,related_slides = related_slides,disp_str=disp_str,disp_color=disp_color,disp_snippet=disp_snippet,related_course_names=related_course_names,lno=lno,lec_name=lec_name,lec_names=lec_names,lnos=lnos,course_names=COURSE_NAMES,num_courses=NUM_COURSES,rel_lnos=rel_lnos,rel_lec_names=rel_lec_names,vis_urls=vis_urls,vis_strs=vis_strs,num_vis=NUM_VIS,google_search_api_key=GOOGLE_SEARCH_API_KEY)
+            return render_template("slide.html",slide_name=slide_name,course_name=course_name,num_related_slides=num_related_slides,related_slides = related_slides,disp_str=disp_str,disp_color=disp_color,disp_snippet=disp_snippet,related_course_names=related_course_names,lno=lno,lec_name=lec_name,lec_names=lec_names,lnos=lnos,course_names=COURSE_NAMES,num_courses=NUM_COURSES,rel_lnos=rel_lnos,rel_lec_names=rel_lec_names,vis_urls=vis_urls,vis_strs=vis_strs,num_vis=NUM_VIS,google_search_api_key=GOOGLE_SEARCH_API_KEY,lec_slides=lec_slides)
         else:
             return render_template("end.html",course_names=COURSE_NAMES,num_courses=NUM_COURSES,vis_urls=vis_urls,vis_strs=vis_strs,num_vis=NUM_VIS)
 

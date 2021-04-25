@@ -273,8 +273,9 @@ $(function() {
 
   
   <button type="button" id="prev" class="btn btn-success pull-left" style="margin-top: 20px" onclick="location.href='{{base_url}}/prev_slide/{{course_name}}/{{lno}}/{{slide_name}}'">Prev Slide</button>
-  <button type="button" id="next" class="btn btn-success pull-right" style="margin-top:20px" onclick="location.href='{{base_url}}/next_slide/{{course_name}}/{{lno}}/{{slide_name}}'">Next Slide</button>
+  <button type="button" id="next" class="btn btn-success pull-right" style="margin-top:20px" onclick="location.href='{{base_url}}/next_slide/{{course_name}}/{{lno}}/{{slide_name}}'" data-toggle="popover" title="<embed type='application/pdf' src={{pdf_url}}/static/slides/{{course_name}}/{{lec_name}}/{{slide_name}}#toolbar=0&navpanes=0&scrollbar=0&view=Fit width='220px' height:'100px' >">Next Slide</button>
   </div>
+      <a href="{{base_url}}/related_slide/{{course_name}}/{{lno}}/{{slide_name}}" id="{{i}}" class="related" data-toggle="popover" title="<embed type='application/pdf' src={{pdf_url}}/static/slides/{{course_name}}/{{lec_name}}/{{slide_name}}#toolbar=0&navpanes=0&scrollbar=0&view=Fit width='220px' height:'100px' >" >{{disp_str[i]}} </a>
 
 
             <div class="sidebar">

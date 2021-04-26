@@ -26,6 +26,11 @@
 
 window.addEventListener( "pageshow", function ( event ) {
 // ie compatibility
+    var lec_slide_list = document.getElementById("lec_slides_list");
+        cur_selected = document.getElementsByClassName("current_display")[0];
+    console.log(lec_slide_list.scrollTop, cur_selected.offsetTop);
+    lec_slide_list.scrollTop = (cur_selected.offsetTop - 100);
+    console.log(lec_slide_list.scrollTop, cur_selected.offsetTop);
 
 
   var historyTraversal = event.persisted || 
@@ -263,10 +268,10 @@ $(function() {
      </div>
      </div>
 <div class="row main_row" >
-<div class="sidebar">
-    <ul class="nav nav-sidebar">
+<div class="sidebar" id="lec_slides_list">
+    <ul class="nav nav-sidebar" >
         {% for i in range(lec_slides[0]) %}
-        <a style="display: inline-block" href="{{base_url}}/related_slide/{{course_name}}/{{lec_slides[4][i]}}/{{lec_slides[1][i]}}">
+        <a id="lec_slide_{{i}}" style="display: inline-block" class="{{'current_display' if slide_name==lec_slides[1][i] else ''}}" href="{{base_url}}/related_slide/{{course_name}}/{{lec_slides[4][i]}}/{{lec_slides[1][i]}}">
             <embed type='application/pdf' src={{pdf_url}}/static/slides/{{course_name}}/{{lec_name}}/{{lec_slides[1][i]}}#toolbar=0&navpanes=0&scrollbar=0&view=Fit width='220px' height:'100px' style="pointer-events:none">
         </a>
         {% endfor %}

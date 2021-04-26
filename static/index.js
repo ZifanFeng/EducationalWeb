@@ -39,6 +39,7 @@ $(document).ready(function(){
     toggleExplanationContainer(false);
 });
 
+
 var logExp = function(isHelpful,expId,expTerm){
     logdata = JSON.stringify({
         action: isHelpful+'###EXP_###'+expTerm+'###'+expId,

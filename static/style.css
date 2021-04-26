@@ -115,5 +115,8 @@
 	padding-left: 0px;
 }
 
-
-
+.current_display {
+    border: 10px;
+    border-style: solid;
+    border-color: gold;
+}

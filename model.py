@@ -17,8 +17,10 @@ vocab_path = os.path.join(static_path,'tf_idf_outputs','vocabulary_list.p')
 tfidfs_path = os.path.join(static_path,'tf_idf_outputs','normalized_tfidfs.npy')
 title_tfidfs_path =  os.path.join(static_path,'tf_idf_outputs','normalized_title_tfidfs.npy')
 ss_corpus_path = os.path.join(static_path,'tf_idf_outputs','ss_corpus.p')
+word2vec_path = os.path.join(static_path,'word2vec_model')
 paras_folder = os.path.join(main_path,'para_idx_data')
 cfg = os.path.join(main_path,'para_idx_data','config.toml')
+word2vec = pickle.load(open(word2vec_path, 'rb'))
 
 related_dict = {}
 slide_names = open(os.path.join(static_path,'slide_names2.txt'), 'r').readlines()
@@ -335,22 +337,80 @@ def get_explanation(search_string,top_k=1):
             formatted_exp = sub_str
     return formatted_exp,'#'.join(file_names)
 
+def get_vector_similarity(vA, vB):
+    return np.dot(vA, vB) / (np.sqrt(np.dot(vA,vA)) * np.sqrt(np.dot(vB,vB)))
 
-def rank_google_result(raw_results, context):
+
+def rank_google_result(raw_results, context, query):
+    print([x['title'] for x in raw_results])
     documents = list(map(lambda x: " ".join([x['title'], x['snippet']]), raw_results))
     documents = list(map(lambda x: preprocess_string(x), documents))
     
-    dictionary = corpora.Dictionary(documents)
-    corpus = [dictionary.doc2bow(text) for text in documents]
+    documents_vectors = list(map(get_sent_vector, documents))
+    context_vector = get_context_vector(context, query)
+    similarities = []
+    if context_vector is None:
+        return [i for i in range(len(raw_results))]
+    else:
+        similarities = list(map(lambda x: get_vector_similarity(x, context_vector), documents_vectors))
+    keyword_counts = list(map(lambda x: count_keyword_match(x['title'], query), raw_results))
+    return get_ranking_index(similarities, keyword_counts)
 
-    lsi = models.LsiModel(corpus, id2word=dictionary, num_topics=2)
-    query = preprocess_string(context)
-    print(query)
-    vec_bow = dictionary.doc2bow(query)
-    vec_lsi = lsi[vec_bow]
-    index = similarities.MatrixSimilarity(lsi[corpus])
-    sims= index[vec_lsi]
-    new_order_index = np.argsort(sims)
-    print(new_order_index, sorted(sims))
-    return new_order_index
+def split_to_words(sent):
+    return list(filter(lambda x: len(x) > 3, re.findall(r"[\w']+", sent)))
+
+def get_vec_from_word(w):
+    try:
+        return word2vec[w]
+    except KeyError:
+        return None
+
+def count_keyword_match(title, query):
+    title_words = split_to_words(title.lower()) 
+    query_words = split_to_words(query.lower()) 
+    title_vecs = [get_vec_from_word(x) for x in title_words]
+    query_vecs = [get_vec_from_word(x)] for x in query_words]
+    count = 0
+    for v1 in title_vecs:
+        if v1 == None:
+            continue
+        for v2 in query_vecs:
+            if v2 == None:
+                continue
+            if get_vector_similarity(v1, v2) > 0.7:
+                count += 1 
+    return count
+
+
+def get_ranking_index(similarities, keyword_counts):
+    scores = [similarities[i] + keyword_counts[i]*0.5 for i in range(len(similarities))]
+    return np.argsort(scores)[::-1]
+
+def get_sent_vector(sent):
+    accus = []
+    count = 0
+    for w in sent:
+        try:
+            v = word2vec[w.lower()]
+            accus.append(v)
+        except KeyError:
+            continue
+    return np.mean(accus, axis=0) if len(accus) else None
+
+def get_context_vector(context, query):
+    query_vec = get_sent_vector(split_to_words(query))
+    print(query_vec)
+    if query_vec is None:
+        return None
+    vecs = []
+    for w in split_to_words(context):
+        try:
+            w_vec = word2vec[w]
+            sim = get_vector_similarity(w_vec, query_vec)
+            print(sim, w)
+            if sim > 0.7:
+                vecs.append(w_vec)
+        except KeyError:
+            continue
+    return np.mean(vecs, axis=0) if len(vecs) > 0 else query_vec
 

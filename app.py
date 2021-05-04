@@ -207,10 +207,10 @@ def value_changed():
 @app.route('/google-search', methods=['POST'])
 def google_search():
     raw_results = request.json['results']
-    ranked_index = model.rank_google_result(raw_results, request.json['context'])
-    for i, res in enumerate(raw_results):
-        res['ranking'] = str(ranked_index[i])
-    socketio.emit('google-search-result', raw_results, broadcast=True)
+    query = request.json['query']
+    ranked_index = model.rank_google_result(raw_results, request.json['context'], query)
+    ranked_result = [raw_results[i] for i in ranked_index]
+    socketio.emit('google-search-result', ranked_result, broadcast=True)
     return 'OK'
 
 @app.route('/explain', methods=['POST','OPTIONS'])

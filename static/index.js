@@ -106,7 +106,6 @@ var googleSearchExp = function() {
 var doGoogleSearch = function() {
     query = document.getElementById("search-explanation").getAttribute("data-query");
     context = localStorage.getItem("context"); 
-    console.log(context)
     if (query.length > 0) {
         googleQueryExplanation(query)
             .then((results)=> {
@@ -115,7 +114,7 @@ var doGoogleSearch = function() {
 
                 xhttp.open("POST", `${LOCAL_HOST}/google-search`, true);
                 xhttp.setRequestHeader("Content-type", "application/json;charset=utf-8");
-                xhttp.send(JSON.stringify({ 'results':  results, 'context': context }));
+                xhttp.send(JSON.stringify({ 'results':  results, 'context': context , 'query': query}));
             })
     }
 }

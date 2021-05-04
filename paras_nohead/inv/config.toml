@@ -1,5 +1,5 @@
-prefix = "/Users/bhavya/Documents/explanation/UI"
 query-judgements = "slide-qrels.txt"
+prefix = "."
 corpus = "file.toml"
 dataset = "para_idx_data"
 index = "paras_nohead"

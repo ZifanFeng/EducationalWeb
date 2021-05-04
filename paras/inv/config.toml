@@ -1,6 +1,6 @@
 corpus = "file.toml"
 dataset = "idx_data_heading"
-prefix = "/Users/bhavya/Documents/explanation/UI"
+prefix = "."
 index = "paras"
 [[analyzers]]
 	method = "ngram-word"

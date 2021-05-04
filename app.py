@@ -226,15 +226,14 @@ def socket_connection(course_name=None, lno=None, slide_name=None, curr_slide=No
 @app.route('/search', methods=['POST'])
 def results(course_name=None, lno=None, slide_name=None, curr_slide=None):   
 	data = json.loads(request.data.decode('utf-8'))
-	print(1,1,data)
 	querytext = data['searchString']
 	explanation,file_names = model.get_explanation(querytext)
+	print(explanation, file_names)
 	if explanation == '':
 		num_results = 0
 	else:
 		num_results = 1
 	response = jsonify({ 'num_results': num_results, 'explanation':explanation,'file_names':file_names})
-	# print(response)
 	return response
 
 @app.route('/search_slide/<course_name>/<lno>/<slide_name>')

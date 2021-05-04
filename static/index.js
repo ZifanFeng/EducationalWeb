@@ -129,20 +129,19 @@ var doSearch = function(searchString) {
     {
 
         var num_fetched_res = 0
-        /*fetch("http://timan102.cs.illinois.edu/explanation//search", {
-        // fetch("http://expertsearch.centralus.cloudapp.azur`1e.com/search", {
+        fetch("http://localhost:8096/search", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
         },
         body: JSON.stringify(data)
-    })*/
-        new Promise((resolve) => {
+    })
+        /*new Promise((resolve) => {
                 resolve(tmpData);
-        })
-            .then(data => {
-                data = data.json;
+        })*/
+        .then(response => {
 
+            response.json().then(data => {
                 const doc = data.explanation;
 
                 if (data.num_results==1){
@@ -175,7 +174,7 @@ var doSearch = function(searchString) {
                 }
 
             }
-            );
+            )});
     }
 }
 

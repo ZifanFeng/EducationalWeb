@@ -4,7 +4,7 @@ import io
 import numpy as np
 import pickle
 from elasticsearch import Elasticsearch
-from ranker import *
+from ranker2 import *
 from gensim import corpora, models, similarities
 from gensim.parsing.preprocessing import remove_stopwords, preprocess_string
 from collections import defaultdict
@@ -313,6 +313,19 @@ def get_search_results(search):
     return len(results),results,disp_strs,course_names,lnos, snippets,lec_names
 
 def get_explanation(search_string,top_k=1):
+    query = metapy.index.Document()
+    query.content(search_string)
+    documents = score2(ranker_obj, query, top_k, alpha)
+
+    explanation = []
+    file_names = []
+    for doc in documents:
+        with open(os.path.join(paras_folder, doc), "r") as f:
+            explanation.append(f.read().strip())
+            print(explanation)
+            file_names.append(doc)
+
+    return explanation, file_names
     query = metapy.index.Document()
     query.content(search_string)
     print(f"get_explanation: {search_string}")

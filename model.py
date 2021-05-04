@@ -418,7 +418,7 @@ def get_context_vector(context, query):
             w_vec = word2vec[w]
             sim = get_vector_similarity(w_vec, query_vec)
             print(sim, w)
-            if sim > 0.5:
+            if sim > 0.1:
                 vecs.append(w_vec)
         except KeyError:
             continue

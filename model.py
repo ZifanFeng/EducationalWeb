@@ -276,11 +276,6 @@ def format_string(matchobj):
     return '<span style="background-color: #bddcf5">'+matchobj.group(0)+'</span>'
 
 def get_search_results(search):
-    # query = metapy.index.Document()
-    # query.content(search)
-    # print (query,idx,ranker,search)
-    # top_docs = ranker.score(idx, query, num_results=50)
-    # top_docs = [slide_titles[x[0]] for x in top_docs]
     top_docs = []
     res = es.search(index='slides',body={"query":{'match':{'content':search}}},size=50)
     # print(res)
@@ -369,21 +364,24 @@ def count_keyword_match(title, query):
     title_words = split_to_words(title.lower()) 
     query_words = split_to_words(query.lower()) 
     title_vecs = [get_vec_from_word(x) for x in title_words]
-    query_vecs = [get_vec_from_word(x)] for x in query_words]
+    query_vecs = [get_vec_from_word(x) for x in query_words]
     count = 0
     for v1 in title_vecs:
-        if v1 == None:
+        if v1 is None:
             continue
         for v2 in query_vecs:
-            if v2 == None:
+            if v2 is None:
                 continue
-            if get_vector_similarity(v1, v2) > 0.7:
-                count += 1 
-    return count
+            if get_vector_similarity(v1, v2) > 0.5:
+                count += 1
+    print(title, count)
+    return count / len(title_words)
 
 
 def get_ranking_index(similarities, keyword_counts):
-    scores = [similarities[i] + keyword_counts[i]*0.5 for i in range(len(similarities))]
+    for i in range(len(similarities)):
+        print(similarities[i], keyword_counts[i])
+    scores = [similarities[i] + keyword_counts[i] for i in range(len(similarities))]
     return np.argsort(scores)[::-1]
 
 def get_sent_vector(sent):
@@ -399,7 +397,6 @@ def get_sent_vector(sent):
 
 def get_context_vector(context, query):
     query_vec = get_sent_vector(split_to_words(query))
-    print(query_vec)
     if query_vec is None:
         return None
     vecs = []
@@ -408,7 +405,7 @@ def get_context_vector(context, query):
             w_vec = word2vec[w]
             sim = get_vector_similarity(w_vec, query_vec)
             print(sim, w)
-            if sim > 0.7:
+            if sim > 0.5:
                 vecs.append(w_vec)
         except KeyError:
             continue

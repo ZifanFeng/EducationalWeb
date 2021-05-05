@@ -1,1 +1,3 @@
 .env
+static/tf_idf_outputs/*
+static/word2vec_model
